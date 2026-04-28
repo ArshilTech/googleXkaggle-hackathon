@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manayush - Digital Mental Health Support for Students</title>
+  <meta name="description" content="Confidential AI-powered mental health and psychological support system for students in higher education." />
+  <meta name="theme-color" content="#0f766e" />
+  
+ 
+  <meta property="og:title" content="Manayush - Mental Health Support" />
+  <meta property="og:description" content="Confidential, stigma-free mental health tools designed for your campus." />
+  <meta property="og:type" content="website" />
+  
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="styles.css" />
+  
+
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="app.js"></script>
+  
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-wrap">
+      <div class="brand">
+        <div class="logo-icon">🧠</div>
+        <div class="brand-text">
+          <h1>Manayush</h1>
+          <p class="tagline" data-i18n="tagline">Digital Psychological Support for Students</p>
+        </div>
+      </div>
+      
+      <nav class="nav" id="mainNav">
+        <button class="nav-link active" data-target="home" data-i18n="nav.home">Home</button>
+        <button class="nav-link" data-target="chat" data-i18n="nav.chat">AI First-Aid</button>
+        <button class="nav-link" data-target="booking" data-i18n="nav.booking">Book Session</button>
+        <button class="nav-link" data-target="resources" data-i18n="nav.resources">Resources</button>
+        <button class="nav-link" data-target="peer" data-i18n="nav.peer">Peer Support</button>
+        <button class="nav-link" data-target="admin" data-i18n="nav.admin">Dashboard</button>
+        <button class="nav-link" data-target="about" data-i18n="nav.about">About</button>
+      </nav>
+      
+      <div class="header-actions">
+        <select id="langSelect" class="lang-select" aria-label="Select Language">
+          <option value="en">🌐 English</option>
+          <option value="hi">🌐 हिन्दी</option>
+        </select>
+        <button id="panicBtn" class="btn btn-danger pulse-gentle" data-i18n="panic">
+          <span class="btn-icon">🆘</span> Need Help?
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  
+  <main class="main-content">
+    <div class="container">
+      
+      
+      <section id="home" class="route active">
+        <div class="hero">
+          <div class="hero-content">
+            <div class="hero-badge">Safe Space for Students</div>
+            <h2 class="hero-title" data-i18n="hero.title">
+              You're not alone.<br>
+              <span class="text-gradient">Support is one click away.</span>
+            </h2>
+            <p class="hero-description" data-i18n="hero.desc">
+              Confidential, stigma - free tools to help you manage stress, anxiety, sleep, and academic pressure - designed specifically for your campus community.
+            </p>
+            <div class="hero-cta">
+              <button class="btn btn-primary btn-lg" data-jump="chat" data-i18n="hero.cta1">
+                <span class="btn-icon">💬</span> Try AI First-Aid
+              </button>
+              <button class="btn btn-secondary btn-lg" data-jump="booking" data-i18n="hero.cta2">
+                <span class="btn-icon">📅</span> Book a Counsellor
+              </button>
+            </div>
+            <ul class="features-list">
+              <li><span class="feature-icon">🧠</span> <span data-i18n="feat.ai">AI-guided coping strategies</span></li>
+              <li><span class="feature-icon">🔒</span> <span data-i18n="feat.confidential">Confidential appointments</span></li>
+              <li><span class="feature-icon">🌐</span> <span data-i18n="feat.local">Regional languages & context</span></li>
+              <li><span class="feature-icon">📊</span> <span data-i18n="feat.analytics">Anonymous campus analytics</span></li>
+            </ul>
+          </div>
+          
+          <div class="hero-card card glass-card">
+            <div class="card-header">
+              <h3 data-i18n="hero.quickCheck">Quick Check-In</h3>
+              <p class="text-muted" data-i18n="hero.quickCheckDesc">How are you feeling today?</p>
+            </div>
+            <div class="mood-grid">
+              <button class="mood-btn" data-mood="calm" title="Calm">
+                <span class="mood-emoji">🙂</span>
+                <span class="mood-label">Calm</span>
+              </button>
+              <button class="mood-btn" data-mood="stressed" title="Stressed">
+                <span class="mood-emoji">😣</span>
+                <span class="mood-label">Stressed</span>
+              </button>
+              <button class="mood-btn" data-mood="anxious" title="Anxious">
+                <span class="mood-emoji">😟</span>
+                <span class="mood-label">Anxious</span>
+              </button>
+              <button class="mood-btn" data-mood="sad" title="Sad">
+                <span class="mood-emoji">😢</span>
+                <span class="mood-label">Sad</span>
+              </button>
+              <button class="mood-btn" data-mood="angry" title="Angry">
+                <span class="mood-emoji">😡</span>
+                <span class="mood-label">Angry</span>
+              </button>
+              <button class="mood-btn" data-mood="tired" title="Tired">
+                <span class="mood-emoji">🥱</span>
+                <span class="mood-label">Tired</span>
+              </button>
+            </div>
+            <p id="moodMsg" class="mood-message"></p>
+            <button class="btn btn-primary btn-block" data-jump="chat" data-i18n="hero.quickCheckCTA">
+              Get personalized tips →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      
+      <section id="chat" class="route">
+        <div class="section-header">
+          <h2 class="section-title">💬 AI First-Aid</h2>
+          <p class="section-desc">Get immediate support and coping strategies</p>
+        </div>
+        
+        <div class="chat-layout">
+          <div class="chat-main card">
+            <div id="chatWindow" class="chat-window" role="log" aria-live="polite"></div>
+            <form id="chatForm" class="chat-form" autocomplete="off">
+              <input 
+                id="chatText" 
+                type="text" 
+                class="chat-input" 
+                placeholder="Type how you're feeling…" 
+                aria-label="Your message" 
+                required 
+              />
+              <button class="btn btn-primary" type="submit">
+                <span class="btn-icon">📤</span> Send
+              </button>
+            </form>
+            <div class="quick-prompts">
+              <span class="quick-label">Quick topics:</span>
+              <button class="chip" data-prompt="I feel overwhelmed by exams">📚 Exams</button>
+              <button class="chip" data-prompt="I have trouble sleeping">😴 Sleep</button>
+              <button class="chip" data-prompt="I feel lonely">💔 Lonely</button>
+              <button class="chip" data-prompt="I'm anxious about placements">💼 Placements</button>
+            </div>
+            <p class="disclaimer">
+              ⚠️ This is first-aid guidance, not a diagnosis. If you're in crisis, use "Need Help?" above.
+            </p>
+          </div>
+          
+          <div class="chat-sidebar">
+            <div class="card">
+              <h4 class="card-title" data-i18n="chat.selfcare">🧘 Self-care Tools</h4>
+              <div class="tools-grid">
+                <button class="tool-btn" id="timerBtn">
+                  <span class="tool-icon">⏱️</span>
+                  <span class="tool-label">3-Min Breathing</span>
+                </button>
+                <button class="tool-btn" id="groundBtn">
+                  <span class="tool-icon">🌍</span>
+                  <span class="tool-label">5-4-3-2-1 Grounding</span>
+                </button>
+                <button class="tool-btn" id="journalBtn">
+                  <span class="tool-icon">📝</span>
+                  <span class="tool-label">Quick Journal</span>
+                </button>
+              </div>
+              <div id="toolArea" class="tool-area"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <section id="booking" class="route">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="booking.title">📅 Confidential Booking</h2>
+          <p class="section-desc" data-i18n="booking.desc">Book a private session with your campus counsellor or request a helpline callback.</p>
+        </div>
+        
+        <div class="booking-layout">
+          <div class="card booking-form-card">
+            <form id="bookForm" class="booking-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" name="firstName" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" name="lastName" class="form-input" required />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" name="email" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Student ID</label>
+                  <input type="text" name="sid" class="form-input" required />
+                </div>
+              </div>
+              
+              <div class="form-row form-row-3">
+                <div class="form-group">
+                  <label class="form-label">Preferred Mode</label>
+                  <select name="mode" class="form-select" required>
+                    <option value="online">🖥️ Online</option>
+                    <option value="phone">📞 Phone</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Preferred Date</label>
+                  <input type="date" name="date" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Preferred Time</label>
+                  <input type="time" name="time" class="form-input" required />
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Topics (select all that apply)</label>
+                <div class="topic-chips">
+                  <label class="topic-chip"><input type="checkbox" name="topics" value="anxiety" /> 😰 Anxiety</label>
+                  <label class="topic-chip"><input type="checkbox" name="topics" value="stress" /> 😤 Stress</label>
+                  <label class="topic-chip"><input type="checkbox" name="topics" value="sleep" /> 😴 Sleep</label>
+                  <label class="topic-chip"><input type="checkbox" name="topics" value="relationships" /> 💕 Relationships</label>
+                  <label class="topic-chip"><input type="checkbox" name="topics" value="academics" /> 📚 Academics</label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Anything you'd like to share (optional)</label>
+                <textarea name="notes" class="form-textarea" rows="4" placeholder="Feel free to share any context..."></textarea>
+              </div>
+              
+              <button class="btn btn-primary btn-lg btn-block" type="submit">
+                <span class="btn-icon">✓</span> Submit Request
+              </button>
+              <p id="bookMsg" class="form-success"></p>
+            </form>
+          </div>
+          
+          <div class="card">
+            <h4 class="card-title">📋 My Upcoming Requests</h4>
+            <ul id="myBookings" class="bookings-list"></ul>
+            <p class="empty-state" id="noBookings">No bookings yet. Book your first session above.</p>
+          </div>
+        </div>
+      </section>
+
+     
+      <section id="resources" class="route">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="resources.title">📚 Psychoeducational Resources</h2>
+          <p class="section-desc">Curated guides, videos, and audio to support your well-being</p>
+        </div>
+        
+        <div class="card">
+          <div class="filters-bar">
+            <select id="resLang" class="form-select filter-select">
+              <option value="en">🌐 English</option>
+              <option value="hi">🌐 हिन्दी</option>
+            </select>
+            <select id="resType" class="form-select filter-select">
+              <option value="all">📁 All Types</option>
+              <option value="video">🎬 Video</option>
+              <option value="audio">🎧 Audio</option>
+              <option value="guide">📖 Guide</option>
+            </select>
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input id="resSearch" type="search" class="form-input search-input" placeholder="Search topics...">
+            </div>
+          </div>
+          
+          <div id="resGrid" class="resources-grid"></div>
+        </div>
+      </section>
+
+      
+      <section id="peer" class="route">
+        <div class="section-header">
+          <h2 class="section-title">🤝 Peer Support (Moderated)</h2>
+          <p class="section-desc">Share anonymously and connect with your community</p>
+        </div>
+        
+        <div class="peer-layout">
+          <div class="card glass-card">
+            <form id="postForm" class="post-form">
+              <div class="form-group">
+                <label class="form-label">Share your thoughts (anonymous)</label>
+                <textarea name="content" class="form-textarea" rows="4" minlength="10" maxlength="500" required placeholder="What's on your mind? Remember, you're not alone..."></textarea>
+              </div>
+              <div class="consent-check">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="rules" required />
+                  <span>I agree to community rules (be kind, no harmful content)</span>
+                </label>
+              </div>
+              <button class="btn btn-primary" type="submit">
+                <span class="btn-icon">✍️</span> Post Anonymously
+              </button>
+              <p id="postMsg" class="form-success"></p>
+            </form>
+          </div>
+          
+          <div class="card">
+            <h4 class="card-title">💬 Community Posts</h4>
+            <ul id="postList" class="posts-list"></ul>
+            <p class="empty-state" id="noPosts">No posts yet. Be the first to share!</p>
+          </div>
+        </div>
+      </section>
+
+      
+      <section id="admin" class="route">
+        <div class="section-header">
+          <h2 class="section-title">📊 Admin Dashboard</h2>
+          <p class="section-desc">Anonymous campus-wide analytics</p>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="statUsers">0</div>
+            <div class="stat-label">Unique Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">😊</div>
+            <div class="stat-value" id="statCheckins">0</div>
+            <div class="stat-label">Mood Check-ins</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value" id="statBookings">0</div>
+            <div class="stat-label">Session Bookings</div>
+          </div>
+        </div>
+        
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <h4 class="card-title">Mood Distribution</h4>
+            <canvas id="moodChart" height="250"></canvas>
+          </div>
+          <div class="card chart-card">
+            <h4 class="card-title">Booking Topics</h4>
+            <canvas id="topicChart" height="250"></canvas>
+          </div>
+        </div>
+      </section>
+
+      
+      <section id="about" class="route">
+        <div class="section-header">
+          <h2 class="section-title">ℹ️ About Manayush</h2>
+        </div>
+        
+        <div class="about-content">
+          <div class="card glass-card">
+            <h3>🎯 Our Mission</h3>
+            <p>
+              Manayush is a campus-tailored mental health platform designed to provide accessible, 
+              confidential psychological support for students in higher education. We believe every 
+              student deserves access to mental health resources in their language and context.
+            </p>
+            
+            <h3>✨ Key Features</h3>
+            <ul class="about-features">
+              <li>🤖 AI-powered first-aid for immediate coping strategies</li>
+              <li>📅 Confidential counsellor booking system</li>
+              <li>🌐 Multi-language support (English & Hindi)</li>
+              <li>📊 Anonymous analytics for campus wellness insights</li>
+              <li>🤝 Moderated peer support community</li>
+            </ul>
+            
+            <details class="privacy-details">
+              <summary>🔒 Privacy & Safety</summary>
+              <div class="privacy-content">
+                <p>
+                  <strong>This is not a medical device.</strong> Manayush provides educational 
+                  resources and first-aid guidance only. In emergencies, please contact your 
+                  campus helpline or national emergency numbers immediately.
+                </p>
+                <p>
+                  All data is stored locally in your browser for this demo. No personal 
+                  information is transmitted to external servers.
+                </p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="card">
+            <h3>🏆 Built for Students</h3>
+            <p>
+              This prototype was developed to address the critical need for mental health 
+              support in educational institutions across India.
+            </p>
+            <p class="text-muted">
+              © 2026 Manayush • Built with 💚 for student well-being
+            </p>
+          </div>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+
+ 
+  <dialog id="panicModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🆘 Immediate Help</h3>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">If you are at risk of harm, please reach out immediately:</p>
+        
+        <div class="helplines-grid">
+          <div class="helpline-card">
+            <div class="helpline-icon">🇮🇳</div>
+            <strong>India National Helpline</strong>
+            <p class="helpline-number">Tele MANAS: <a href="tel:14416">14416</a></p>
+            <p class="helpline-alt">or <a href="tel:18008914416">1800 891 4416</a></p>
+          </div>
+          <div class="helpline-card">
+            <div class="helpline-icon">🏫</div>
+            <strong>Campus Counsellor</strong>
+            <p class="helpline-number" id="counsellorLine">+91 00000 00000</p>
+            <p class="helpline-alt">Available 9 AM - 6 PM</p>
+          </div>
+        </div>
+        
+        <p class="modal-footer-text">
+          Remember: Reaching out for help is a sign of strength, not weakness. 💚
+        </p>
+      </div>
+      <form method="dialog">
+        <button class="btn btn-secondary btn-block">Close</button>
+      </form>
+    </div>
+  </dialog>
+
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© <span id="year"></span> Manayush • Built with 💚 for student well-being</p>
+      <button id="exportBtn" class="btn btn-sm">📥 Export My Data</button>
+    </div>
+  </footer>
+</body>
+</html>
