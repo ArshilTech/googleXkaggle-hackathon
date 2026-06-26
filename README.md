@@ -1,5 +1,7 @@
 # Manayush - Digital Mental Health Support for Students
 
+# Deployed Website Like: https://manayush1.netlify.app
+
 ## Overview
 
 Manayush is a confidential, AI-powered mental health and psychological support system designed specifically for students in higher education. This web application provides stigma-free tools to help students manage stress, anxiety, sleep issues, and academic pressure within their campus community.
