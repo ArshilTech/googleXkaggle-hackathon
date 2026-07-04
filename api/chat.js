@@ -149,21 +149,23 @@ function get_crisis_helplines() {
 }
 
 // Wrap plain functions as ADK FunctionTools
-const groundingExerciseTool = new FunctionTool(grounding_exercise_54321, {
+const groundingExerciseTool = new FunctionTool({
   name: "grounding_exercise_54321",
   description:
     "Returns a structured 5-4-3-2-1 sensory grounding exercise for " +
     "managing anxiety, panic attacks, and overwhelming emotions. " +
     "Call this when the user feels anxious, panicked, or overwhelmed.",
+  execute: grounding_exercise_54321,
 });
 
-const crisisHelplinesTool = new FunctionTool(get_crisis_helplines, {
+const crisisHelplinesTool = new FunctionTool({
   name: "get_crisis_helplines",
   description:
     "Mock MCP Server tool. Returns a list of Indian mental health crisis " +
     "helpline numbers (Tele MANAS 14416, iCall, Vandrevala Foundation, " +
     "NIMHANS). Call this when the user is in crisis, expresses thoughts " +
     "of self-harm, suicide, or needs immediate professional help.",
+  execute: get_crisis_helplines,
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -188,7 +190,7 @@ const copingCoachAgent = new LlmAgent({
     "Specialist in evidence-based coping strategies. Handles anxiety, " +
     "stress, overwhelm, panic, and general emotional regulation. " +
     "Provides the 5-4-3-2-1 grounding exercise and breathing techniques.",
-  model: "gemini-2.0-flash",
+  model: "gemini-2.5-flash",
   instruction: `You are a warm, empathetic Coping Coach for college students in India.
 
 Your role:
@@ -216,7 +218,7 @@ const safetyAgent = new LlmAgent({
     "Crisis intervention specialist. Activated when the user expresses " +
     "thoughts of self-harm, suicide, hopelessness, or any emergency. " +
     "Provides helpline numbers and ensures a medical disclaimer is attached.",
-  model: "gemini-2.0-flash",
+  model: "gemini-2.5-flash",
   instruction: `You are a Crisis Safety Agent for a student mental health platform in India.
 
 Your role:
@@ -240,7 +242,7 @@ ${MEDICAL_DISCLAIMER}`,
 const triageAgent = new LlmAgent({
   name: "triage_agent",
   description: "Root triage agent that reads mood and routes requests.",
-  model: "gemini-2.0-flash",
+  model: "gemini-2.5-flash",
   instruction: `You are the Triage Agent for "Manayush", a digital mental health support 
 platform for college students in India.
 
