@@ -190,7 +190,7 @@ const copingCoachAgent = new LlmAgent({
     "Specialist in evidence-based coping strategies. Handles anxiety, " +
     "stress, overwhelm, panic, and general emotional regulation. " +
     "Provides the 5-4-3-2-1 grounding exercise and breathing techniques.",
-  model: "gemini-2.5-flash",
+  model: "gemini-flash-latest",
   instruction: `You are a warm, empathetic Coping Coach for college students in India.
 
 Your role:
@@ -218,7 +218,7 @@ const safetyAgent = new LlmAgent({
     "Crisis intervention specialist. Activated when the user expresses " +
     "thoughts of self-harm, suicide, hopelessness, or any emergency. " +
     "Provides helpline numbers and ensures a medical disclaimer is attached.",
-  model: "gemini-2.5-flash",
+  model: "gemini-flash-latest",
   instruction: `You are a Crisis Safety Agent for a student mental health platform in India.
 
 Your role:
@@ -242,7 +242,7 @@ ${MEDICAL_DISCLAIMER}`,
 const triageAgent = new LlmAgent({
   name: "triage_agent",
   description: "Root triage agent that reads mood and routes requests.",
-  model: "gemini-2.5-flash",
+  model: "gemini-flash-latest",
   instruction: `You are the Triage Agent for "Manayush", a digital mental health support 
 platform for college students in India.
 
