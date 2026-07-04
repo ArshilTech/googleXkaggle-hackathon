@@ -11,6 +11,8 @@
  * Authentication: process.env.GEMINI_API_KEY (never hardcoded).
  */
 
+import fs from "fs";
+import path from "path";
 import {
   Agent as LlmAgent,
   Runner,
@@ -21,10 +23,26 @@ import {
 // ─────────────────────────────────────────────────────────────
 // 0.  Environment guard — fail fast if no API key
 // ─────────────────────────────────────────────────────────────
+// Attempt to load .env file if GEMINI_API_KEY is not already defined in process.env (e.g. during local execution)
+if (!process.env.GEMINI_API_KEY) {
+  try {
+    const envPath = path.resolve(process.cwd(), ".env");
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, "utf8");
+      const match = envContent.match(/GEMINI_API_KEY\s*=\s*(.+)/);
+      if (match) {
+        process.env.GEMINI_API_KEY = match[1].trim();
+      }
+    }
+  } catch (err) {
+    console.warn("[manayush] Error reading .env file:", err);
+  }
+}
+
 if (!process.env.GEMINI_API_KEY) {
   console.error(
     "[manayush] GEMINI_API_KEY is not set. " +
-      "Please add it to your environment variables."
+    "Please add it to your environment variables."
   );
 }
 
@@ -368,6 +386,13 @@ export default async function handler(req, res) {
     });
 
     for await (const event of events) {
+      // Check for ADK runner or LLM API errors (e.g., quota exceeded 429)
+      if (event.errorCode) {
+        throw new Error(
+          `ADK runner/model error [${event.errorCode}]: ${event.errorMessage || "Unknown error"}`
+        );
+      }
+
       // Collect text from content parts
       if (event.content?.parts) {
         for (const part of event.content.parts) {
