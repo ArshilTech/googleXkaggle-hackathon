@@ -1,8 +1,5 @@
 # 🧠 Manayush — Digital Mental Health Support for Students
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/main/Emojis/Smilies/Smiling%20Face%20with%20Halo.png" alt="Angel Smiley" width="120" />
-</p>
 
 <p align="center">
   <strong>An AI First-Aid & Psychological Support Fleet built for Campus Communities</strong>
