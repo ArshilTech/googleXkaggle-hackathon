@@ -1,233 +1,142 @@
-<div align="center">
+# 🧠 Manayush — Digital Mental Health Support for Students
 
-# 🧠 Manayush
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/main/Emojis/Smilies/Smiling%20Face%20with%20Halo.png" alt="Angel Smiley" width="120" />
+</p>
 
-### Digital Mental Health & Psychological Support for Students
+<p align="center">
+  <strong>An AI First-Aid & Psychological Support Fleet built for Campus Communities</strong>
+  <br />
+  <em>Submitted to the Kaggle & Google 5-Day AI Agents Intensive Course Capstone (Agents for Good Track)</em>
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-14b8a6.svg?style=for-the-badge)](LICENSE)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](index.html)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](styles.css)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](app.js)
-[![Google Solution Challenge](https://img.shields.io/badge/Google_Solution_Challenge-4285F4?style=for-the-badge&logo=google&logoColor=white)](#)
-
-<br/>
-
-> *"You're not alone. Support is one click away."*
-
-A **confidential, AI-powered** mental health and psychological support system designed specifically for students in higher education. Manayush provides stigma-free tools to help students manage stress, anxiety, sleep issues, and academic pressure within their campus community.
-
-<br/>
-
-> [!NOTE]
-> 🚀 **This project is an upgrade of the SIH 2025 Internal Edition**, rebuilt from the ground up with enhanced features, a modern UI/UX, multilingual support, and a production-grade architecture for the **Google Solution Challenge**.
+<p align="center">
+  <a href="https://google-xkaggle-hackathon.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Online-emerald?style=for-the-badge&logo=vercel" alt="Live Demo" /></a>
+  <a href="#-architecture"><img src="https://img.shields.io/badge/Architecture-Multi--Agent-blue?style=for-the-badge&logo=google-cloud" alt="Architecture" /></a>
+  <a href="https://github.com/ArshilTech/googleXkaggle-hackathon"><img src="https://img.shields.io/badge/Repository-GitHub-black?style=for-the-badge&logo=github" alt="GitHub Repo" /></a>
+</p>
 
 ---
 
-</div>
-
-## 🔗 Check it out: https://manayush1.netlify.app
-
----
-
-## 📑 Table of Contents
-
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [🚀 Getting Started](#-getting-started)
-- [📖 Usage Guide](#-usage-guide)
-- [⚙️ Configuration](#️-configuration)
-- [🔒 Privacy & Confidentiality](#-privacy--confidentiality)
-- [🗺️ Roadmap](#️-roadmap)
-- [📄 License](#-license)
+## 📖 Table of Contents
+1. [🌟 Project Overview & Pitch](#-project-overview--pitch)
+2. [🤖 Agent Architecture](#-agent-architecture)
+3. [🚀 Demonstration of Key Course Concepts](#-demonstration-of-key-course-concepts)
+4. [🛠️ Technical Deep-Dive](#-technical-deep-dive)
+5. [📋 Setup & Deployment Instructions](#-setup--deployment-instructions)
+6. [🎓 About the Course](#-about-the-course)
 
 ---
 
-## ✨ Features
+## 🌟 Project Overview & Pitch
 
-<table>
-<tr>
-<td width="50%">
+### The Problem
+Higher education environments are highly stressful. Academic pressure, exam stress, isolation, and relationship challenges often impact students' mental health. On-campus psychological resources (like counsellors) are often overwhelmed, leaving students without immediate support during late-night panic attacks or acute stress episodes.
 
-### 🤖 AI First-Aid Chat
-Interactive AI-guided coping strategies with keyword-based intent matching. Provides immediate, context-aware support for stress, anxiety, sleep issues, loneliness, and more — with **crisis detection** that auto-surfaces emergency helplines.
+### Our Solution
+**Manayush** is a stigma-free, student-first digital psychological aid. Using the **Google Agent Development Kit (ADK)**, we built a secure, production-ready multi-agent fleet that acts as an **AI First-Aid Companion**. It triages the student's emotional state, guides them through clinical grounding exercises, and routes them to emergency numbers when self-harm or crisis patterns are detected.
 
-</td>
-<td width="50%">
-
-### 📅 Confidential Booking
-Private session booking with campus counselors or helpline callbacks. Students can select their preferred mode (online/phone), date, time, and relevant topics — all stored securely with **zero data transmission**.
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 📚 Psychoeducational Resources
-Curated mental health resources filterable by **language**, **type** (video, audio, guide), and **keyword search**. Includes guided breathing exercises, exam stress toolkits, sleep meditation, and mindfulness content.
-
-</td>
-<td width="50%">
-
-### 🤝 Peer Support Network
-Moderated, anonymous peer support community where students can share thoughts safely. Features **content moderation** with automatic flagging of harmful content and community rules enforcement.
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 📊 Admin Analytics Dashboard
-Campus-wide anonymous analytics with real-time tracking of unique users, mood check-ins, and session bookings. Visualized through interactive **Chart.js** doughnut and bar charts for data-driven insights.
-
-</td>
-<td width="50%">
-
-### 🌐 Multilingual Support
-Full **English** and **Hindi (हिन्दी)** support with a dynamic i18n translation system. All UI elements, navigation, hero sections, and feature descriptions adapt seamlessly to the selected language.
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 🧘 Self-Care Toolkit
-Built-in wellness tools including a **3-minute breathing timer**, **5-4-3-2-1 grounding exercise**, and a **quick journal** — accessible directly alongside the AI chat for immediate relief.
-
-</td>
-<td width="50%">
-
-### 🆘 Emergency Panic Button
-One-click access to national helplines (Tele MANAS: 14416) and campus counselor contacts. The panic button is **always visible** in the header with a gentle pulse animation to ensure help is never more than a tap away.
-
-</td>
-</tr>
-</table>
+```mermaid
+graph TD
+    User([Student User]) -->|Inputs Message| Triage[Triage Agent]
+    Triage -->|Check-in/General| Direct[Direct Response + Disclaimer]
+    Triage -->|Anxiety/Stress/Panic| Coach[Coping Coach Agent]
+    Triage -->|Self-Harm/Suicide/Crisis| Safety[Safety Agent]
+    
+    Coach -->|Calls Tool| GroundTool[5-4-3-2-1 Grounding Tool]
+    Safety -->|Calls Tool| MCPTool[MCP Crisis Helpline Server]
+```
 
 ---
 
-## 🛠️ Tech Stack
+## 🤖 Agent Architecture
 
-| Layer | Technology | Purpose |
-|:------|:-----------|:--------|
-| **Structure** | HTML5 | Semantic markup with accessibility (ARIA) |
-| **Styling** | CSS3 + CSS Variables | Custom theming, glassmorphism, responsive design |
-| **Logic** | JavaScript (ES6+) | SPA routing, state management, i18n |
-| **Charts** | Chart.js 4.4 | Interactive data visualization |
-| **Typography** | Google Fonts | Plus Jakarta Sans, DM Sans |
-| **Storage** | LocalStorage | Client-side data persistence |
+Manayush uses a hierarchical three-tier multi-agent system:
+
+### 1. **Triage Agent (The Orchestrator)**
+* **Role**: Analyzes the student's input mood and routes it to the appropriate specialist.
+* **Instruction Strategy**: If the user shows symptoms of panic, stress, or exam anxiety, it delegates to `coping_coach_agent`. If the user shows crisis signals or mentions self-harm, it immediately delegates to `safety_agent`.
+
+### 2. **Coping Coach Agent (Stress Regulator)**
+* **Role**: Focuses on evidence-based emotional regulation.
+* **Associated Tool**: `grounding_exercise_54321` tool.
+* **Behavior**: Validates student stress with high empathy and walks them step-by-step through a sensory cooldown.
+
+### 3. **Safety Agent (Crisis Guard)**
+* **Role**: Ensures absolute student safety and legal compliance.
+* **Associated Tool**: `get_crisis_helplines` (Mock MCP tool).
+* **Behavior**: Intercepts emergency prompts, returns toll-free helpline numbers (like India's **Tele MANAS 14416**), and attaches a strict medical disclaimer.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Demonstration of Key Course Concepts
 
-### Prerequisites
+In compliance with the Capstone Project evaluation, Manayush integrates the following key concepts:
 
-- Any modern web browser (Chrome, Firefox, Edge, Safari)
-- No build tools, package managers, or servers required
+| Key Concept | Implementation Details | Location in Code |
+| :--- | :--- | :--- |
+| **Agent / Multi-Agent System** | Hierarchical routing using ADK's `LlmAgent` and `subAgents` configurations. | [api/chat.js (Line 185-271)](file:///e:/googleXkaggle-hackathon/api/chat.js#L185-L271) |
+| **MCP Server Integration** | Simulates a Model Context Protocol tool `get_crisis_helplines` returning structured schema payloads. | [api/chat.js (Line 92-149)](file:///e:/googleXkaggle-hackathon/api/chat.js#L92-L149) |
+| **Agent Skills** | `grounding_exercise_54321` parses a clinical grounding step list into the agent context dynamically. | [api/chat.js (Line 35-90)](file:///e:/googleXkaggle-hackathon/api/chat.js#L35-L90) |
+| **Security Features** | Strict CORS configurations, message length limits, dynamic `.env` API guards, and automatic disclaimers. | [api/chat.js (Line 282-359)](file:///e:/googleXkaggle-hackathon/api/chat.js#L282-L359) |
+| **Deployability** | Structured as a production-grade, stateless serverless handler designed for Vercel. | [api/chat.js (Line 296-435)](file:///e:/googleXkaggle-hackathon/api/chat.js#L296-L435) |
 
-### Installation
+---
 
+## 🛠️ Technical Deep-Dive
+
+### Frontend Integration (`app.js`)
+* **Typing Indicator**: Visually represents agent processing via CSS bouncing dot animations.
+* **Resiliency Fallback**: If the serverless endpoint goes down or encounters an API key error, the client catches the failure and degrades gracefully to an offline keyword-matching assistant.
+* **Session Persistence**: Maintains conversational session context (`chatSessionId`) across multiple turns.
+
+### Safe Vercel Error Handling
+If the LLM model throws an error (e.g. rate limits), the backend captures `event.errorCode`, aborts safely, and returns a `500` status with a `fallbackReply` structure. This ensures the frontend never displays raw stacks to the user.
+
+---
+
+## 📋 Setup & Deployment Instructions
+
+### Local Development Setup
+1. Clone the repository and install dependencies:
+   ```bash
+   git clone https://github.com/ArshilTech/googleXkaggle-hackathon.git
+   cd googleXkaggle-hackathon
+   npm install
+   ```
+2. Create a `.env` file in the root folder and add your Gemini API Key:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+3. Run the development server:
+   ```bash
+   npx vercel dev
+   ```
+4. Open `http://localhost:3000` in your browser.
+
+### Cloud Deployment to Vercel
+Deploy your serverless workspace directly to production:
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/manayush.git
+# Add your environment variable to Vercel securely
+npx vercel env add GEMINI_API_KEY
 
-# Navigate to the project
-cd manayush
-
-# Open in browser — that's it!
-start index.html        # Windows
-open index.html         # macOS
-xdg-open index.html     # Linux
+# Push your deployment to production
+npx vercel --prod
 ```
 
-> [!TIP]
-> For the best development experience, use a local server like the **Live Server** VS Code extension to enable hot-reloading.
+---
+
+## 🎓 About the Course
+
+**Intensive Vibe Coding Course with Google**
+* **Day 1**: Transitioned from chat completion to fully autonomous agent loops.
+* **Day 2**: Wired custom function tools and agent-to-agent delegator handshakes.
+* **Day 3**: Explored agent skills, token limits, and stateful memory.
+* **Day 4**: Implemented security controls, disclaimers, and rate-limiting fallbacks.
+* **Day 5**: Moved agents to governed, observable production-grade serverless deployments.
 
 ---
 
-## 📖 Usage Guide
-
-| Section | Description |
-|:--------|:------------|
-| 🏠 **Home** | Overview of services, quick mood check-in with personalized tips |
-| 💬 **AI First-Aid** | Chat with AI for immediate coping strategies and self-care tools |
-| 📅 **Book Session** | Schedule confidential counselor appointments (online or phone) |
-| 📚 **Resources** | Browse curated mental health guides, videos, and audio content |
-| 🤝 **Peer Support** | Share anonymously and connect with your campus community |
-| 📊 **Dashboard** | Administrative analytics — mood trends, booking patterns |
-| ℹ️ **About** | Mission, features, and privacy information |
-
----
-
-## ⚙️ Configuration
-
-Customize Manayush for your institution by updating the campus settings in [`app.js`](app.js):
-
-```javascript
-const CAMPUS = {
-  name: "Your College",
-  counsellorPhone: "+91 00000 00000"
-};
-```
-
-| Parameter | Description |
-|:----------|:------------|
-| `name` | Your institution's display name |
-| `counsellorPhone` | Campus counselor's contact number |
-
----
-
-## 🔒 Privacy & Confidentiality
-
-<table>
-<tr>
-<td>🗄️</td>
-<td><strong>Local Storage Only</strong> — All data resides in the browser. Nothing leaves your device.</td>
-</tr>
-<tr>
-<td>🚫</td>
-<td><strong>Zero Data Transmission</strong> — No personal information is sent to external servers.</td>
-</tr>
-<tr>
-<td>🔐</td>
-<td><strong>Confidential Sessions</strong> — Booking details and journal entries are private by design.</td>
-</tr>
-<tr>
-<td>📊</td>
-<td><strong>Anonymous Analytics</strong> — Admin dashboard data is aggregated and fully de-identified.</td>
-</tr>
-<tr>
-<td>📥</td>
-<td><strong>Data Export</strong> — Students can export their personal data as JSON at any time.</td>
-</tr>
-</table>
-
-> [!IMPORTANT]
-> Manayush is **not a medical device**. It provides educational resources and first-aid guidance only. In emergencies, please contact your campus helpline or national emergency numbers immediately.
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Backend integration with Firebase for persistent, encrypted storage
-- [ ] Gemini API integration for advanced AI-powered conversations
-- [ ] Push notifications for session reminders
-- [ ] Expanded language support (Tamil, Telugu, Bengali)
-- [ ] PWA support for offline access
-- [ ] Role-based access for counselors and administrators
-
----
-
-## 📄 License
-
-This project is open-source and available under the **MIT License**.
-
----
-
-<div align="center">
-
-**Built with 💚 for student well-being**
-
-*Manayush • Upgraded from SIH 2025 Internal Edition → Google Solution Challenge*
-
-</div>
+<p align="center">
+  Developed with 💚 for the student community.
+</p>
