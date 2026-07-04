@@ -259,33 +259,97 @@ function addMessage(role, text) {
   
   const msgDiv = document.createElement("div");
   msgDiv.className = `msg ${role}`;
-  msgDiv.innerHTML = `<div class="bubble">${escapeHtml(text)}</div>`;
+  // Support markdown-style bold (**text**) in bot replies
+  const rendered = role === "bot" 
+    ? escapeHtml(text).replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    : escapeHtml(text);
+  msgDiv.innerHTML = `<div class="bubble">${rendered}</div>`;
   
   chatWindow.appendChild(msgDiv);
   chatWindow.scrollTop = chatWindow.scrollHeight;
+  return msgDiv;
 }
 
+// Typing indicator helper
+function showTypingIndicator() {
+  const chatWindow = $("#chatWindow");
+  if (!chatWindow) return null;
+  
+  const indicator = document.createElement("div");
+  indicator.className = "msg bot typing-indicator";
+  indicator.innerHTML = `<div class="bubble"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
+  chatWindow.appendChild(indicator);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+  return indicator;
+}
 
-addMessage("bot", "Hi! I'm your support companion. 💚 Share what's on your mind, and I'll help with coping strategies.");
+function removeTypingIndicator(indicator) {
+  if (indicator && indicator.parentNode) {
+    indicator.parentNode.removeChild(indicator);
+  }
+}
+
+// Persistent session ID for multi-turn conversations
+let chatSessionId = null;
+
+addMessage("bot", "Hi! I'm your AI support companion powered by Manayush. 💚 Share what's on your mind, and I'll help with coping strategies.");
 
 
-$("#chatForm")?.addEventListener("submit", (e) => {
+$("#chatForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   
   const input = $("#chatText");
   const text = input?.value.trim();
   
   if (!text) return;
-  
 
   addMessage("user", text);
   input.value = "";
   
+  // Show typing indicator while waiting for API
+  const typingEl = showTypingIndicator();
   
-  const replies = getBotReply(text);
-  replies.forEach((reply, i) => {
-    setTimeout(() => addMessage("bot", reply), 400 + (i * 600));
-  });
+  try {
+    // Call the ADK multi-agent endpoint
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text,
+        sessionId: chatSessionId,
+      }),
+    });
+    
+    removeTypingIndicator(typingEl);
+    
+    if (response.ok) {
+      const data = await response.json();
+      
+      // Persist session for multi-turn
+      if (data.sessionId) {
+        chatSessionId = data.sessionId;
+      }
+      
+      addMessage("bot", data.reply);
+    } else {
+      // API returned an error — try fallback reply from response
+      const errData = await response.json().catch(() => ({}));
+      if (errData.fallbackReply) {
+        addMessage("bot", errData.fallbackReply);
+      } else {
+        // Use offline fallback
+        throw new Error("API error");
+      }
+    }
+  } catch {
+    // Network error or API unreachable — fall back to offline mode
+    removeTypingIndicator(typingEl);
+    
+    const replies = getBotReply(text);
+    replies.forEach((reply, i) => {
+      setTimeout(() => addMessage("bot", reply), 400 + (i * 600));
+    });
+  }
 });
 
 
