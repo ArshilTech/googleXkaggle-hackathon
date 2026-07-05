@@ -1,4 +1,4 @@
-# 🧠 Manayush — Digital Mental Health Support for Students
+# 🧠 Manayush - Digital Mental Health Support for Students
 
 
 <p align="center">
