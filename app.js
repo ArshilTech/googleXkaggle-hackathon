@@ -73,7 +73,7 @@ const CAMPUS = {
 
 const store = {
   key: "manayush-data",
-  
+
   read() {
     try {
       return JSON.parse(localStorage.getItem(this.key) || "{}");
@@ -81,11 +81,11 @@ const store = {
       return {};
     }
   },
-  
+
   write(data) {
     localStorage.setItem(this.key, JSON.stringify(data));
   },
-  
+
   update(updater) {
     const data = this.read();
     const next = updater({ ...data });
@@ -100,21 +100,21 @@ function setRoute(id) {
   $$(".route").forEach(section => {
     section.classList.toggle("active", section.id === id);
   });
-  
-  
+
+
   $$(".nav-link").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.target === id);
   });
-  
- 
+
+
   $("#mainNav").classList.remove("open");
-  
-  
+
+
   if (id === "admin") renderAdmin();
   if (id === "resources") renderResources();
   if (id === "peer") renderPosts();
-  
- 
+
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -137,18 +137,18 @@ const langSelect = $("#langSelect");
 
 function applyLanguage(lang) {
   const dict = i18n[lang] || i18n.en;
-  
+
   $$("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
     if (dict[key]) el.textContent = dict[key];
   });
-  
- 
+
+
   if ($("#resLang")) {
     $("#resLang").value = lang;
   }
-  
-  
+
+
   store.update(d => ({ ...d, lang }));
 }
 
@@ -182,19 +182,19 @@ const moodMessages = {
 $$(".mood-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const mood = btn.dataset.mood;
-    
-    
+
+
     $$(".mood-btn").forEach(b => b.classList.remove("selected"));
     btn.classList.add("selected");
-    
-    
+
+
     const msgEl = $("#moodMsg");
     if (msgEl) {
       msgEl.textContent = moodMessages[mood] || "";
       msgEl.style.display = "block";
     }
-    
-   
+
+
     store.update(d => ({
       ...d,
       checkins: [...(d.checkins || []), { mood, ts: Date.now() }]
@@ -217,54 +217,54 @@ $$(".chip[data-prompt]").forEach(chip => {
 function getBotReply(text) {
   const t = text.toLowerCase();
   const replies = [];
-  
+
   // Keyword-based intent matching
   if (/sleep|insomnia|tired|rest/.test(t)) {
     replies.push("💤 Sleep tips: Maintain a fixed schedule, avoid screens 1 hour before bed, and try a 10-minute breathing exercise.");
   }
-  
+
   if (/exam|exams|test|study|studies|academic|assign|homework/.test(t)) {
     replies.push("📚 Study stress relief: Try the Pomodoro technique (25 min focus, 5 min break), break large tasks into smaller ones, and set 3 priorities for today.");
   }
-  
+
   if (/anx|panic|worry|nervous/.test(t)) {
     replies.push("😰 Anxiety first-aid: Try 5-4-3-2-1 grounding and slow exhale-focused breathing (inhale 4s, exhale 6-8s).");
   }
-  
+
   if (/lonely|alone|isolation|no friends/.test(t)) {
     replies.push("💙 Feeling isolated is tough. Consider reaching out to a friend, joining a campus club, or simply taking a walk in a common area.");
   }
-  
+
   if (/depress|hopeless|harm|suicide|kill|hurt myself/.test(t)) {
     replies.push("🆘 If you feel unsafe or have thoughts of self-harm, please use 'Need Help?' at the top for immediate support. You matter. 💚");
   }
-  
+
   if (/relationship|friend|family|parent|roommate/.test(t)) {
     replies.push("💕 Relationship challenges are common. Consider talking to a counsellor who can provide confidential support and perspective.");
   }
-  
+
 
   if (replies.length === 0) {
     replies.push("I'm here to help. 💬 Can you share a bit more about what you're feeling right now?");
   }
-  
-  
-  
+
+
+
   return replies;
 }
 
 function addMessage(role, text) {
   const chatWindow = $("#chatWindow");
   if (!chatWindow) return;
-  
+
   const msgDiv = document.createElement("div");
   msgDiv.className = `msg ${role}`;
   // Support markdown-style bold (**text**) in bot replies
-  const rendered = role === "bot" 
+  const rendered = role === "bot"
     ? escapeHtml(text).replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     : escapeHtml(text);
   msgDiv.innerHTML = `<div class="bubble">${rendered}</div>`;
-  
+
   chatWindow.appendChild(msgDiv);
   chatWindow.scrollTop = chatWindow.scrollHeight;
   return msgDiv;
@@ -274,7 +274,7 @@ function addMessage(role, text) {
 function showTypingIndicator() {
   const chatWindow = $("#chatWindow");
   if (!chatWindow) return null;
-  
+
   const indicator = document.createElement("div");
   indicator.className = "msg bot typing-indicator";
   indicator.innerHTML = `<div class="bubble"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
@@ -297,18 +297,18 @@ addMessage("bot", "Hi! I'm your AI support companion powered by Manayush. 💚 S
 
 $("#chatForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  
+
   const input = $("#chatText");
   const text = input?.value.trim();
-  
+
   if (!text) return;
 
   addMessage("user", text);
   input.value = "";
-  
+
   // Show typing indicator while waiting for API
   const typingEl = showTypingIndicator();
-  
+
   try {
     // Call the ADK multi-agent endpoint
     const response = await fetch("/api/chat", {
@@ -319,20 +319,20 @@ $("#chatForm")?.addEventListener("submit", async (e) => {
         sessionId: chatSessionId,
       }),
     });
-    
+
     removeTypingIndicator(typingEl);
-    
+
     if (response.ok) {
       const data = await response.json();
-      
+
       // Persist session for multi-turn
       if (data.sessionId) {
         chatSessionId = data.sessionId;
       }
-      
+
       addMessage("bot", data.reply);
     } else {
-      // API returned an error — try fallback reply from response
+      // API returned an error - try fallback reply from response
       const errData = await response.json().catch(() => ({}));
       if (errData.fallbackReply) {
         addMessage("bot", errData.fallbackReply);
@@ -342,9 +342,9 @@ $("#chatForm")?.addEventListener("submit", async (e) => {
       }
     }
   } catch {
-    // Network error or API unreachable — fall back to offline mode
+    // Network error or API unreachable - fall back to offline mode
     removeTypingIndicator(typingEl);
-    
+
     const replies = getBotReply(text);
     replies.forEach((reply, i) => {
       setTimeout(() => addMessage("bot", reply), 400 + (i * 600));
@@ -356,7 +356,7 @@ $("#chatForm")?.addEventListener("submit", async (e) => {
 $("#timerBtn")?.addEventListener("click", () => {
   const toolArea = $("#toolArea");
   if (!toolArea) return;
-  
+
   let seconds = 180;
   toolArea.innerHTML = `
     <div style="text-align: center;">
@@ -365,14 +365,14 @@ $("#timerBtn")?.addEventListener("click", () => {
       <p style="margin-top: 8px; color: var(--text-muted);">Inhale deeply... hold... exhale slowly...</p>
     </div>
   `;
-  
+
   const display = $("#timerDisplay");
   const interval = setInterval(() => {
     seconds--;
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     display.textContent = `${mins}:${secs.toString().padStart(2, "0")}`;
-    
+
     if (seconds <= 0) {
       clearInterval(interval);
       display.textContent = "✓ Done!";
@@ -385,7 +385,7 @@ $("#timerBtn")?.addEventListener("click", () => {
 $("#groundBtn")?.addEventListener("click", () => {
   const toolArea = $("#toolArea");
   if (!toolArea) return;
-  
+
   toolArea.innerHTML = `
     <div>
       <p style="font-weight: 600; margin-bottom: 12px;">🌍 5-4-3-2-1 Grounding Exercise</p>
@@ -404,13 +404,13 @@ $("#groundBtn")?.addEventListener("click", () => {
 
 $("#journalBtn")?.addEventListener("click", () => {
   const entry = prompt("📝 Write a quick journal entry:\n\nWhat's on your mind right now?");
-  
+
   if (entry && entry.trim()) {
     store.update(d => ({
       ...d,
       journal: [...(d.journal || []), { text: entry.trim(), ts: Date.now() }]
     }));
-    
+
     const toolArea = $("#toolArea");
     if (toolArea) {
       toolArea.innerHTML = `
@@ -427,11 +427,11 @@ $("#journalBtn")?.addEventListener("click", () => {
 
 $("#bookForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
-  
+
   const form = e.target;
   const formData = new FormData(form);
   const topics = $$("input[name='topics']:checked", form).map(i => i.value);
-  
+
   const booking = {
     firstName: formData.get("firstName"),
     lastName: formData.get("lastName"),
@@ -444,27 +444,27 @@ $("#bookForm")?.addEventListener("submit", (e) => {
     notes: formData.get("notes") || "",
     ts: Date.now()
   };
-  
- 
+
+
   store.update(d => ({
     ...d,
     bookings: [...(d.bookings || []), booking]
   }));
-  
-  
+
+
   const msgEl = $("#bookMsg");
   if (msgEl) {
     msgEl.textContent = "✓ Request submitted successfully! You'll receive a confirmation via campus email.";
     msgEl.style.display = "block";
   }
-  
-  
+
+
   renderBookings();
-  
-  
+
+
   form.reset();
-  
-  
+
+
   setTimeout(() => {
     if (msgEl) msgEl.style.display = "none";
   }, 5000);
@@ -474,22 +474,22 @@ function renderBookings() {
   const list = $("#myBookings");
   const emptyState = $("#noBookings");
   if (!list) return;
-  
+
   const { bookings = [] } = store.read();
   list.innerHTML = "";
-  
+
   if (bookings.length === 0) {
     if (emptyState) emptyState.style.display = "block";
     return;
   }
-  
+
   if (emptyState) emptyState.style.display = "none";
-  
+
   bookings.slice().reverse().forEach(b => {
     const li = document.createElement("li");
     const topicsText = b.topics.length ? b.topics.join(", ") : "General";
     const modeIcon = b.mode === "online" ? "🖥️" : "📞";
-    
+
     li.innerHTML = `
       <strong>${modeIcon} ${b.date} at ${b.time}</strong>
       <br>
@@ -519,29 +519,29 @@ const RESOURCES = [
 function renderResources() {
   const grid = $("#resGrid");
   if (!grid) return;
-  
+
   const lang = $("#resLang")?.value || "en";
   const type = $("#resType")?.value || "all";
   const query = ($("#resSearch")?.value || "").toLowerCase();
-  
+
   grid.innerHTML = "";
-  
+
   const filtered = RESOURCES
     .filter(r => (lang === "all" || r.lang === lang))
     .filter(r => (type === "all" || r.type === type))
-    .filter(r => !query || 
-      r.title.toLowerCase().includes(query) || 
+    .filter(r => !query ||
+      r.title.toLowerCase().includes(query) ||
       r.tags.some(t => t.includes(query))
     );
-  
+
   if (filtered.length === 0) {
     grid.innerHTML = '<p class="empty-state">No resources found matching your criteria.</p>';
     return;
   }
-  
+
   filtered.forEach(r => {
     const typeIcon = { video: "🎬", audio: "🎧", guide: "📖" }[r.type] || "📄";
-    
+
     const card = document.createElement("article");
     card.className = "resource-card";
     card.innerHTML = `
@@ -574,36 +574,36 @@ const HARMFUL_PATTERNS = /(suicide|self-harm|kill myself|harm others|violence|wa
 
 $("#postForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
-  
+
   const form = e.target;
   const formData = new FormData(form);
   const content = (formData.get("content") || "").trim();
-  
+
   if (!content) return;
-  
+
   const isFlagged = HARMFUL_PATTERNS.test(content);
-  
+
 
   if (isFlagged) {
     $("#panicModal")?.showModal();
   }
-  
-  
+
+
   store.update(d => ({
     ...d,
     posts: [...(d.posts || []), { content, ts: Date.now(), flagged: isFlagged }]
   }));
-  
+
 
   const msgEl = $("#postMsg");
   if (msgEl) {
     msgEl.textContent = "✓ Posted anonymously!";
     msgEl.style.display = "block";
   }
-  
+
   form.reset();
   renderPosts();
-  
+
   setTimeout(() => {
     if (msgEl) msgEl.style.display = "none";
   }, 3000);
@@ -613,17 +613,17 @@ function renderPosts() {
   const list = $("#postList");
   const emptyState = $("#noPosts");
   if (!list) return;
-  
+
   const { posts = [] } = store.read();
   list.innerHTML = "";
-  
+
   if (posts.length === 0) {
     if (emptyState) emptyState.style.display = "block";
     return;
   }
-  
+
   if (emptyState) emptyState.style.display = "none";
-  
+
 
   posts.slice().reverse().forEach(p => {
     const li = document.createElement("li");
@@ -633,7 +633,7 @@ function renderPosts() {
       hour: "2-digit",
       minute: "2-digit"
     });
-    
+
     li.innerHTML = `
       <div>${escapeHtml(p.content)}</div>
       <div class="post-time">
@@ -651,23 +651,23 @@ let topicChart = null;
 
 function renderAdmin() {
   const data = store.read();
-  
- 
+
+
   const userCount = 1 + (data.posts?.length ? 1 : 0) + (data.bookings?.length ? 1 : 0);
   $("#statUsers").textContent = userCount;
   $("#statCheckins").textContent = data.checkins?.length || 0;
   $("#statBookings").textContent = data.bookings?.length || 0;
-  
- 
+
+
   const moodCounts = (data.checkins || []).reduce((acc, c) => {
     acc[c.mood] = (acc[c.mood] || 0) + 1;
     return acc;
   }, {});
-  
+
   const moodCanvas = $("#moodChart");
   if (moodCanvas && typeof Chart !== "undefined") {
     if (moodChart) moodChart.destroy();
-    
+
     moodChart = new Chart(moodCanvas, {
       type: "doughnut",
       data: {
@@ -687,7 +687,7 @@ function renderAdmin() {
       }
     });
   }
-  
+
 
   const topicCounts = {};
   (data.bookings || []).forEach(b => {
@@ -695,11 +695,11 @@ function renderAdmin() {
       topicCounts[t] = (topicCounts[t] || 0) + 1;
     });
   });
-  
+
   const topicCanvas = $("#topicChart");
   if (topicCanvas && typeof Chart !== "undefined") {
     if (topicChart) topicChart.destroy();
-    
+
     topicChart = new Chart(topicCanvas, {
       type: "bar",
       data: {
@@ -726,16 +726,16 @@ function renderAdmin() {
 
 $("#exportBtn")?.addEventListener("click", (e) => {
   e.preventDefault();
-  
+
   const data = store.read();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  
+
   const link = document.createElement("a");
   link.href = url;
   link.download = `manayush-export-${new Date().toISOString().split("T")[0]}.json`;
   link.click();
-  
+
   URL.revokeObjectURL(url);
 });
 
@@ -761,13 +761,13 @@ if (location.hash) {
 
 
 console.log(`
-%c🧠 Manayush — Mental Health Support Platform
+%c🧠 Manayush - Mental Health Support Platform
 %c
 If you're viewing this, you might be interested in how this works!
 This is a client-side demo with localStorage persistence.
 
 Remember: You're not alone. 💚
-`, 
+`,
   "color: #14b8a6; font-size: 18px; font-weight: bold;",
   "color: #64748b; font-size: 12px;",
   "color: #64748b; font-size: 11px;"
