@@ -1,5 +1,5 @@
 /**
- * Manayush — Multi-Agent Chat Endpoint
+ * Manayush - Multi-Agent Chat Endpoint
  *
  * Production-ready Vercel serverless function powered by the Google Agent
  * Development Kit (ADK).  Three specialised agents collaborate:
@@ -20,23 +20,28 @@ import {
   FunctionTool,
 } from "@google/adk";
 
-// ─────────────────────────────────────────────────────────────
-// 0.  Environment guard — fail fast if no API key
-// ─────────────────────────────────────────────────────────────
+
+// 0.  Environment guard - fail fast if no API key
+
 // Attempt to load .env file if GEMINI_API_KEY is not already defined in process.env (e.g. during local execution)
-if (!process.env.GEMINI_API_KEY) {
+if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_GENAI_API_KEY) {
   try {
     const envPath = path.resolve(process.cwd(), ".env");
     if (fs.existsSync(envPath)) {
       const envContent = fs.readFileSync(envPath, "utf8");
-      const match = envContent.match(/GEMINI_API_KEY\s*=\s*(.+)/);
+      const match = envContent.match(/GEMINI_API_KEY\s*=\s*(.+)/) || envContent.match(/GOOGLE_GENAI_API_KEY\s*=\s*(.+)/);
       if (match) {
         process.env.GEMINI_API_KEY = match[1].trim();
+        process.env.GOOGLE_GENAI_API_KEY = match[1].trim();
       }
     }
   } catch (err) {
     console.warn("[manayush] Error reading .env file:", err);
   }
+}
+
+if (process.env.GEMINI_API_KEY && !process.env.GOOGLE_GENAI_API_KEY) {
+  process.env.GOOGLE_GENAI_API_KEY = process.env.GEMINI_API_KEY;
 }
 
 if (!process.env.GEMINI_API_KEY) {
@@ -46,12 +51,14 @@ if (!process.env.GEMINI_API_KEY) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
+const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+
 // 1.  Tool Definitions
-// ─────────────────────────────────────────────────────────────
+
 
 /**
- * Coping Coach tool — returns a structured 5-4-3-2-1 grounding exercise.
+ * Coping Coach tool - returns a structured 5-4-3-2-1 grounding exercise.
  * The agent calls this whenever the user needs an immediate calming technique.
  */
 function grounding_exercise_54321() {
@@ -65,35 +72,35 @@ function grounding_exercise_54321() {
         step: 5,
         sense: "SEE",
         instruction:
-          "Look around and name 5 things you can see — a pen, a cloud, a crack in the wall… anything.",
+          "Look around and name 5 things you can see - a pen, a cloud, a crack in the wall… anything.",
         emoji: "👀",
       },
       {
         step: 4,
         sense: "TOUCH",
         instruction:
-          "Notice 4 things you can physically feel — your feet on the floor, the texture of your shirt, the warmth of your hands.",
+          "Notice 4 things you can physically feel - your feet on the floor, the texture of your shirt, the warmth of your hands.",
         emoji: "✋",
       },
       {
         step: 3,
         sense: "HEAR",
         instruction:
-          "Close your eyes and identify 3 sounds — a fan humming, birds chirping, distant traffic.",
+          "Close your eyes and identify 3 sounds - a fan humming, birds chirping, distant traffic.",
         emoji: "👂",
       },
       {
         step: 2,
         sense: "SMELL",
         instruction:
-          "Notice 2 things you can smell — your coffee, the fresh air, even the paper of a notebook.",
+          "Notice 2 things you can smell - your coffee, the fresh air, even the paper of a notebook.",
         emoji: "👃",
       },
       {
         step: 1,
         sense: "TASTE",
         instruction:
-          "Focus on 1 thing you can taste — take a sip of water, chew gum, or simply notice the taste in your mouth.",
+          "Focus on 1 thing you can taste - take a sip of water, chew gum, or simply notice the taste in your mouth.",
         emoji: "👅",
       },
     ],
@@ -102,7 +109,7 @@ function grounding_exercise_54321() {
 }
 
 /**
- * Mock MCP Server tool — simulates calling an MCP (Model Context Protocol)
+ * Mock MCP Server tool - simulates calling an MCP (Model Context Protocol)
  * CrisisHelplineServer that returns local Indian helpline numbers.
  *
  * In production this would be a real MCP client call.  The mock returns
@@ -125,9 +132,9 @@ function get_crisis_helplines() {
         languages: ["English", "Hindi", "Regional"],
       },
       {
-        name: "iCall – TISS",
+        name: "iCall - TISS",
         number: "9152987821",
-        hours: "Mon–Sat, 8 AM – 10 PM",
+        hours: "Mon-Sat, 8 AM - 10 PM",
         languages: ["English", "Hindi", "Marathi"],
       },
       {
@@ -140,7 +147,7 @@ function get_crisis_helplines() {
       {
         name: "NIMHANS Helpline",
         number: "080-46110007",
-        hours: "Mon–Sat, 9:30 AM – 5 PM",
+        hours: "Mon-Sat, 9:30 AM - 5 PM",
         languages: ["English", "Kannada", "Hindi"],
       },
     ],
@@ -168,17 +175,17 @@ const crisisHelplinesTool = new FunctionTool({
   execute: get_crisis_helplines,
 });
 
-// ─────────────────────────────────────────────────────────────
+
 // 2.  Agent Definitions
-// ─────────────────────────────────────────────────────────────
+
 
 const MEDICAL_DISCLAIMER =
-  "⚕️ **Disclaimer:** I am an AI assistant, not a licensed therapist or " +
+  "⚕️ *Disclaimer:* I am an AI assistant, not a licensed therapist or " +
   "medical professional. The information I provide is for educational and " +
   "supportive purposes only and does not constitute medical advice, " +
   "diagnosis, or treatment. If you are in crisis or need professional " +
   "help, please contact a qualified mental health professional or call " +
-  "Tele MANAS at **14416** (toll-free: 1800-891-4416).";
+  "Tele MANAS at *14416* (toll-free: 1800-891-4416).";
 
 /**
  * Coping Coach Agent
@@ -190,11 +197,11 @@ const copingCoachAgent = new LlmAgent({
     "Specialist in evidence-based coping strategies. Handles anxiety, " +
     "stress, overwhelm, panic, and general emotional regulation. " +
     "Provides the 5-4-3-2-1 grounding exercise and breathing techniques.",
-  model: "gemini-flash-latest",
+  model: MODEL_NAME,
   instruction: `You are a warm, empathetic Coping Coach for college students in India.
 
 Your role:
-• Validate the user's feelings first — never dismiss or minimise.
+• Validate the user's feelings first - never dismiss or minimise.
 • Offer the 5-4-3-2-1 grounding exercise using your grounding_exercise_54321 tool
   when the user feels anxious, overwhelmed, or panicked.
 • Guide the user through the exercise step by step in a calm, encouraging tone.
@@ -218,14 +225,14 @@ const safetyAgent = new LlmAgent({
     "Crisis intervention specialist. Activated when the user expresses " +
     "thoughts of self-harm, suicide, hopelessness, or any emergency. " +
     "Provides helpline numbers and ensures a medical disclaimer is attached.",
-  model: "gemini-flash-latest",
+  model: MODEL_NAME,
   instruction: `You are a Crisis Safety Agent for a student mental health platform in India.
 
 Your role:
 • Take every mention of self-harm, suicide, or crisis with utmost seriousness.
 • Immediately use the get_crisis_helplines tool to fetch helpline numbers.
 • Present the helpline information clearly and compassionately.
-• Validate the user's feelings — "It takes courage to share this."
+• Validate the user's feelings - "It takes courage to share this."
 • Encourage them to reach out to a trusted person or professional.
 • NEVER attempt to diagnose, provide therapy, or minimise their experience.
 • Keep your tone calm, compassionate, and non-judgmental.
@@ -242,7 +249,7 @@ ${MEDICAL_DISCLAIMER}`,
 const triageAgent = new LlmAgent({
   name: "triage_agent",
   description: "Root triage agent that reads mood and routes requests.",
-  model: "gemini-flash-latest",
+  model: MODEL_NAME,
   instruction: `You are the Triage Agent for "Manayush", a digital mental health support 
 platform for college students in India.
 
@@ -250,13 +257,13 @@ Your job:
 1. Read the user's message and assess their emotional state / mood.
 2. Decide which specialist agent should handle the conversation:
 
-   • If the user expresses **anxiety, stress, overwhelm, panic, exam pressure,
-     sleep issues**, or needs a **coping strategy** → delegate to **coping_coach_agent**.
+   • If the user expresses *anxiety, stress, overwhelm, panic, exam pressure,
+     sleep issues*, or needs a *coping strategy* → delegate to *coping_coach_agent*.
    
-   • If the user expresses **thoughts of self-harm, suicide, hopelessness,
-     wanting to hurt themselves, or any crisis** → delegate to **safety_agent**.
+   • If the user expresses *thoughts of self-harm, suicide, hopelessness,
+     wanting to hurt themselves, or any crisis* → delegate to *safety_agent*.
    
-   • For **general check-ins, greetings, or mild concerns** → respond directly
+   • For *general check-ins, greetings, or mild concerns* → respond directly
      with warmth and empathy. Offer to help with specific topics. Keep it brief.
 
 3. When responding directly (not delegating), ALWAYS append this disclaimer:
@@ -264,7 +271,7 @@ Your job:
 ${MEDICAL_DISCLAIMER}
 
 Important rules:
-• Always err on the side of caution — if in doubt, delegate to safety_agent.
+• Always err on the side of caution - if in doubt, delegate to safety_agent.
 • Never diagnose, prescribe, or provide medical advice.
 • Be culturally sensitive to the Indian student context.
 • Use warm, supportive language with appropriate emojis.
@@ -272,9 +279,9 @@ Important rules:
   subAgents: [copingCoachAgent, safetyAgent],
 });
 
-// ─────────────────────────────────────────────────────────────
+
 // 3.  Runner & Session Service (initialised once per cold start)
-// ─────────────────────────────────────────────────────────────
+
 
 const sessionService = new InMemorySessionService();
 
@@ -284,9 +291,9 @@ const runner = new Runner({
   sessionService,
 });
 
-// ─────────────────────────────────────────────────────────────
+
 // 4.  Vercel Serverless Handler
-// ─────────────────────────────────────────────────────────────
+
 
 /**
  * POST /api/chat
