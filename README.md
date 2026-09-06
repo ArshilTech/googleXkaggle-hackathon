@@ -16,19 +16,19 @@
 ---
 
 ## 📖 Table of Contents
-1. [🌟 Project Overview & Pitch](#-project-overview--pitch)
-2. [🤖 Agent Architecture](#-agent-architecture)
-3. [🚀 Demonstration of Key Course Concepts](#-demonstration-of-key-course-concepts)
-4. [🛠️ Technical Deep-Dive](#-technical-deep-dive)
-5. [📋 Setup & Deployment Instructions](#-setup--deployment-instructions)
-6. [🎓 About the Course](#-about-the-course)
+1. 🌟 Project Overview & Pitch
+2. 🤖 Agent Architecture
+3. 🚀 Demonstration of Key Course Concepts
+4. 🛠️ Technical Deep-Dive
+5. 📋 Setup & Deployment Instructions
+6. 🎓 About the Course
 
 ---
 
 ## 🌟 Project Overview & Pitch
 
 ### The Problem
-Higher education environments are highly stressful. Academic pressure, exam stress, isolation, and relationship challenges often impact students' mental health. On-campus psychological resources (like counsellors) are often overwhelmed, leaving students without immediate support during late-night panic attacks or acute stress episodes.
+Higher education environments are highly stressful. Academic pressure, exam stress, isolation and relationship challenges often impact students' mental health. On-campus psychological resources (like counsellors) are often overwhelmed, leaving students without immediate support during late-night panic attacks or acute stress episodes.
 
 ### Our Solution
 **Manayush** is a stigma-free, student-first digital psychological aid. Using the **Google Agent Development Kit (ADK)**, we built a secure, production-ready multi-agent fleet that acts as an **AI First-Aid Companion**. It triages the student's emotional state, guides them through clinical grounding exercises, and routes them to emergency numbers when self-harm or crisis patterns are detected.
@@ -52,7 +52,7 @@ Manayush uses a hierarchical three-tier multi-agent system:
 
 ### 1. **Triage Agent (The Orchestrator)**
 * **Role**: Analyzes the student's input mood and routes it to the appropriate specialist.
-* **Instruction Strategy**: If the user shows symptoms of panic, stress, or exam anxiety, it delegates to `coping_coach_agent`. If the user shows crisis signals or mentions self-harm, it immediately delegates to `safety_agent`.
+* **Instruction Strategy**: If the user shows symptoms of panic, stress or exam anxiety, it delegates to `coping_coach_agent`. If the user shows crisis signals or mentions self-harm, it immediately delegates to `safety_agent`.
 
 ### 2. **Coping Coach Agent (Stress Regulator)**
 * **Role**: Focuses on evidence-based emotional regulation.
@@ -62,7 +62,7 @@ Manayush uses a hierarchical three-tier multi-agent system:
 ### 3. **Safety Agent (Crisis Guard)**
 * **Role**: Ensures absolute student safety and legal compliance.
 * **Associated Tool**: `get_crisis_helplines` (Mock MCP tool).
-* **Behavior**: Intercepts emergency prompts, returns toll-free helpline numbers (like India's **Tele MANAS 14416**), and attaches a strict medical disclaimer.
+* **Behavior**: Intercepts emergency prompts, returns toll-free helpline numbers (like India's **Tele MANAS 14416**) and attaches a strict medical disclaimer.
 
 ---
 
@@ -72,11 +72,11 @@ In compliance with the Capstone Project evaluation, Manayush integrates the foll
 
 | Key Concept | Implementation Details | Location in Code |
 | :--- | :--- | :--- |
-| **Agent / Multi-Agent System** | Hierarchical routing using ADK's `LlmAgent` and `subAgents` configurations. | [api/chat.js (Line 185-271)](file:///e:/googleXkaggle-hackathon/api/chat.js#L185-L271) |
-| **MCP Server Integration** | Simulates a Model Context Protocol tool `get_crisis_helplines` returning structured schema payloads. | [api/chat.js (Line 92-149)](file:///e:/googleXkaggle-hackathon/api/chat.js#L92-L149) |
-| **Agent Skills** | `grounding_exercise_54321` parses a clinical grounding step list into the agent context dynamically. | [api/chat.js (Line 35-90)](file:///e:/googleXkaggle-hackathon/api/chat.js#L35-L90) |
-| **Security Features** | Strict CORS configurations, message length limits, dynamic `.env` API guards, and automatic disclaimers. | [api/chat.js (Line 282-359)](file:///e:/googleXkaggle-hackathon/api/chat.js#L282-L359) |
-| **Deployability** | Structured as a production-grade, stateless serverless handler designed for Vercel. | [api/chat.js (Line 296-435)](file:///e:/googleXkaggle-hackathon/api/chat.js#L296-L435) |
+| **Agent / Multi-Agent System** | Hierarchical routing using ADK's `LlmAgent` and `subAgents` configurations. | api/chat.js (Line 185-271) |
+| **MCP Server Integration** | Simulates a Model Context Protocol tool `get_crisis_helplines` returning structured schema payloads. | api/chat.js (Line 92-149) |
+| **Agent Skills** | `grounding_exercise_54321` parses a clinical grounding step list into the agent context dynamically. | api/chat.js (Line 35-90) |
+| **Security Features** | Strict CORS configurations, message length limits, dynamic `.env` API guards and automatic disclaimers. | api/chat.js (Line 282-359) |
+| **Deployability** | Structured as a production-grade, stateless serverless handler designed for Vercel. | api/chat.js (Line 296-435) |
 
 ---
 
@@ -128,8 +128,8 @@ npx vercel --prod
 **Intensive Vibe Coding Course with Google**
 * **Day 1**: Transitioned from chat completion to fully autonomous agent loops.
 * **Day 2**: Wired custom function tools and agent-to-agent delegator handshakes.
-* **Day 3**: Explored agent skills, token limits, and stateful memory.
-* **Day 4**: Implemented security controls, disclaimers, and rate-limiting fallbacks.
+* **Day 3**: Explored agent skills, token limits and stateful memory.
+* **Day 4**: Implemented security controls, disclaimers and rate-limiting fallbacks.
 * **Day 5**: Moved agents to governed, observable production-grade serverless deployments.
 
 ---
