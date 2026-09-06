@@ -21,7 +21,7 @@ const i18n = {
     "nav.about": "About",
     panic: "Need Help?",
     "hero.title": "You're not alone. Support is one click away.",
-    "hero.desc": "Confidential, stigma - free tools to help you manage stress, anxiety, sleep, and academic pressure - designed specifically for your campus community.",
+    "hero.desc": "Confidential, stigma - free tools to help you manage stress, anxiety, sleep and academic pressure - designed specifically for your campus community.",
     "hero.cta1": "Try AI First-Aid",
     "hero.cta2": "Book a Counsellor",
     "feat.ai": "AI-guided coping strategies",
@@ -220,11 +220,11 @@ function getBotReply(text) {
 
   // Keyword-based intent matching
   if (/sleep|insomnia|tired|rest/.test(t)) {
-    replies.push("💤 Sleep tips: Maintain a fixed schedule, avoid screens 1 hour before bed, and try a 10-minute breathing exercise.");
+    replies.push("💤 Sleep tips: Maintain a fixed schedule, avoid screens 1 hour before bed and try a 10-minute breathing exercise.");
   }
 
   if (/exam|exams|test|study|studies|academic|assign|homework/.test(t)) {
-    replies.push("📚 Study stress relief: Try the Pomodoro technique (25 min focus, 5 min break), break large tasks into smaller ones, and set 3 priorities for today.");
+    replies.push("📚 Study stress relief: Try the Pomodoro technique (25 min focus, 5 min break), break large tasks into smaller ones and set 3 priorities for today.");
   }
 
   if (/anx|panic|worry|nervous/.test(t)) {
@@ -232,7 +232,7 @@ function getBotReply(text) {
   }
 
   if (/lonely|alone|isolation|no friends/.test(t)) {
-    replies.push("💙 Feeling isolated is tough. Consider reaching out to a friend, joining a campus club, or simply taking a walk in a common area.");
+    replies.push("💙 Feeling isolated is tough. Consider reaching out to a friend, joining a campus club or simply taking a walk in a common area.");
   }
 
   if (/depress|hopeless|harm|suicide|kill|hurt myself/.test(t)) {
