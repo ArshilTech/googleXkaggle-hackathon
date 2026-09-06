@@ -100,7 +100,7 @@ function grounding_exercise_54321() {
         step: 1,
         sense: "TASTE",
         instruction:
-          "Focus on 1 thing you can taste - take a sip of water, chew gum, or simply notice the taste in your mouth.",
+          "Focus on 1 thing you can taste - take a sip of water, chew gum or simply notice the taste in your mouth.",
         emoji: "👅",
       },
     ],
@@ -180,12 +180,12 @@ const crisisHelplinesTool = new FunctionTool({
 
 
 const MEDICAL_DISCLAIMER =
-  "⚕️ *Disclaimer:* I am an AI assistant, not a licensed therapist or " +
+  "⚕️ Disclaimer: I am an AI assistant, not a licensed therapist or " +
   "medical professional. The information I provide is for educational and " +
   "supportive purposes only and does not constitute medical advice, " +
   "diagnosis, or treatment. If you are in crisis or need professional " +
   "help, please contact a qualified mental health professional or call " +
-  "Tele MANAS at *14416* (toll-free: 1800-891-4416).";
+  "Tele MANAS at 14416 (toll-free: 1800-891-4416).";
 
 /**
  * Coping Coach Agent
@@ -195,7 +195,7 @@ const copingCoachAgent = new LlmAgent({
   name: "coping_coach_agent",
   description:
     "Specialist in evidence-based coping strategies. Handles anxiety, " +
-    "stress, overwhelm, panic, and general emotional regulation. " +
+    "stress, overwhelm, panic and general emotional regulation. " +
     "Provides the 5-4-3-2-1 grounding exercise and breathing techniques.",
   model: MODEL_NAME,
   instruction: `You are a warm, empathetic Coping Coach for college students in India.
@@ -203,7 +203,7 @@ const copingCoachAgent = new LlmAgent({
 Your role:
 • Validate the user's feelings first - never dismiss or minimise.
 • Offer the 5-4-3-2-1 grounding exercise using your grounding_exercise_54321 tool
-  when the user feels anxious, overwhelmed, or panicked.
+  when the user feels anxious, overwhelmed or panicked.
 • Guide the user through the exercise step by step in a calm, encouraging tone.
 • Suggest complementary techniques (box breathing, progressive muscle relaxation)
   when appropriate.
@@ -223,19 +223,19 @@ const safetyAgent = new LlmAgent({
   name: "safety_agent",
   description:
     "Crisis intervention specialist. Activated when the user expresses " +
-    "thoughts of self-harm, suicide, hopelessness, or any emergency. " +
+    "thoughts of self-harm, suicide, hopelessness or any emergency. " +
     "Provides helpline numbers and ensures a medical disclaimer is attached.",
   model: MODEL_NAME,
   instruction: `You are a Crisis Safety Agent for a student mental health platform in India.
 
 Your role:
-• Take every mention of self-harm, suicide, or crisis with utmost seriousness.
+• Take every mention of self-harm, suicide or crisis with utmost seriousness.
 • Immediately use the get_crisis_helplines tool to fetch helpline numbers.
 • Present the helpline information clearly and compassionately.
 • Validate the user's feelings - "It takes courage to share this."
 • Encourage them to reach out to a trusted person or professional.
-• NEVER attempt to diagnose, provide therapy, or minimise their experience.
-• Keep your tone calm, compassionate, and non-judgmental.
+• NEVER attempt to diagnose, provide therapy or minimise their experience.
+• Keep your tone calm, compassionate and non-judgmental.
 • ALWAYS append this disclaimer at the end of every response:
 
 ${MEDICAL_DISCLAIMER}`,
@@ -257,13 +257,13 @@ Your job:
 1. Read the user's message and assess their emotional state / mood.
 2. Decide which specialist agent should handle the conversation:
 
-   • If the user expresses *anxiety, stress, overwhelm, panic, exam pressure,
-     sleep issues*, or needs a *coping strategy* → delegate to *coping_coach_agent*.
+   • If the user expresses anxiety, stress, overwhelm, panic, exam pressure,
+     sleep issues or needs a coping strategy → delegate to coping_coach_agent.
    
-   • If the user expresses *thoughts of self-harm, suicide, hopelessness,
-     wanting to hurt themselves, or any crisis* → delegate to *safety_agent*.
+   • If the user expresses thoughts of self-harm, suicide, hopelessness,
+     wanting to hurt themselves or any crisis → delegate to safety_agent.
    
-   • For *general check-ins, greetings, or mild concerns* → respond directly
+   • For general check-ins, greetings or mild concerns → respond directly
      with warmth and empathy. Offer to help with specific topics. Keep it brief.
 
 3. When responding directly (not delegating), ALWAYS append this disclaimer:
@@ -272,9 +272,9 @@ ${MEDICAL_DISCLAIMER}
 
 Important rules:
 • Always err on the side of caution - if in doubt, delegate to safety_agent.
-• Never diagnose, prescribe, or provide medical advice.
+• Never diagnose, prescribe or provide medical advice.
 • Be culturally sensitive to the Indian student context.
-• Use warm, supportive language with appropriate emojis.
+• Use warm supportive language with appropriate emojis.
 • Keep direct responses under 150 words.`,
   subAgents: [copingCoachAgent, safetyAgent],
 });
@@ -305,7 +305,7 @@ const runner = new Runner({
  *   { "reply": "...", "agentName": "coping_coach_agent", "sessionId": "..." }
  */
 export default async function handler(req, res) {
-  // ── CORS headers (for local dev & cross-origin frontends) ──
+  //  CORS headers (for local dev & cross-origin frontends) 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -314,14 +314,14 @@ export default async function handler(req, res) {
     return res.status(204).end();
   }
 
-  // ── Method check ──
+  //  Method check 
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed. Use POST.",
     });
   }
 
-  // ── API key guard ──
+  // API key guard 
   if (!process.env.GEMINI_API_KEY) {
     return res.status(500).json({
       error:
@@ -330,7 +330,7 @@ export default async function handler(req, res) {
     });
   }
 
-  // ── Parse & validate body ──
+  //  Parse & validate body 
   const { message, sessionId: incomingSessionId } = req.body || {};
 
   if (!message || typeof message !== "string" || message.trim().length === 0) {
@@ -351,7 +351,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ── Session management ──
+    //  Session management 
     // Use the client-provided sessionId or generate a new one.
     const userId = "manayush-user";
     const sessionId =
@@ -367,7 +367,7 @@ export default async function handler(req, res) {
         sessionId,
       });
     } catch {
-      // Session doesn't exist yet — that's fine
+      // Session doesn't exist yet - that's fine
       session = null;
     }
 
@@ -379,7 +379,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // ── Run the multi-agent pipeline ──
+    //  Run the multi-agent pipeline 
     const content = {
       role: "user",
       parts: [{ text: userMessage }],
@@ -421,7 +421,7 @@ export default async function handler(req, res) {
     if (!replyText.trim()) {
       replyText =
         "I'm here for you. 💚 Could you tell me a bit more about what you're feeling? " +
-        "I'm ready to help with coping strategies, resources, or just a listening ear.";
+        "I'm ready to help with coping strategies, resources or just a listening ear.";
     }
 
     return res.status(200).json({
