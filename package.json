@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Manayush — Multi-agent mental health support backend powered by Google ADK",
+  "description": "Manayush - Multi-agent mental health support backend powered by Google ADK",
   "dependencies": {
     "@google/adk": "^1.x"
   },
